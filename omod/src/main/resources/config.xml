@@ -18,5 +18,9 @@
 		<class>org.openmrs.module.patientidentifiergenerator.advice.BeforeSaveAdvice</class>
 	</advice>
 
+	<require_modules>
+		<require_module version="4.10.0">org.openmrs.module.idgen</require_module>
+	</require_modules>
+	
 </module>
 
