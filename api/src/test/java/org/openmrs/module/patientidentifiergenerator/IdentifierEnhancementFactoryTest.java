@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Context.class)
-@PowerMockIgnore("javax.management.*")
+@PowerMockIgnore({"javax.management.*", "jdk.internal.reflect.*"})
 public class IdentifierEnhancementFactoryTest {
 
     private IdentifierEnhancementFactory identifierEnhancementFactory;
