@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>patientidentifiergenerator</artifactId>
-		<version>0.1.0</version>
+		<version>0.2.0</version>
 	</parent>
 
 	<artifactId>patientidentifiergenerator-omod</artifactId>
@@ -15,7 +15,7 @@
 	<description>OMOD project for Patient Identifier Generator</description>
 
 	<properties>
-		<openMRSVersion>2.1.7</openMRSVersion>
+		<openMRSVersion>2.6.6</openMRSVersion>
 	</properties>
 
 	<dependencies>

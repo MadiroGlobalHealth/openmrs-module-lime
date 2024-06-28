@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>patientidentifiergenerator</artifactId>
-		<version>0.1.0</version>
+		<version>0.2.0</version>
 	</parent>
 
 	<artifactId>patientidentifiergenerator-api</artifactId>
@@ -13,7 +13,7 @@
 	<description>API project for Patient Identifier Generator</description>
 
 	<properties>
-		<openMRSVersion>2.1.7</openMRSVersion>
+		<openMRSVersion>2.6.6</openMRSVersion>
 		<idgenModuleVersion>4.11.0-SNAPSHOT</idgenModuleVersion>
 	</properties>
 
@@ -69,6 +69,22 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<!-- Add the binary files to the omod without filtering -->
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>*.xml</include>
+				</includes>
+			</resource>
+		</resources>
+
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+			</testResource>
+		</testResources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
