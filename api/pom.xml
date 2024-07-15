@@ -15,6 +15,7 @@
 	<properties>
 		<openMRSVersion>2.6.6</openMRSVersion>
 		<idgenModuleVersion>4.11.0-SNAPSHOT</idgenModuleVersion>
+		<datafilterVersion>2.3.0-SNAPSHOT</datafilterVersion>
 	</properties>
 
 	<dependencies>
@@ -66,6 +67,12 @@
 			<scope>provided</scope>
 			<version>${idgenModuleVersion}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>datafilter-api</artifactId>
+			<version>${datafilterVersion}</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -73,10 +80,7 @@
 			<!-- Add the binary files to the omod without filtering -->
 			<resource>
 				<directory>src/main/resources</directory>
-				<filtering>false</filtering>
-				<includes>
-					<include>*.xml</include>
-				</includes>
+				<filtering>true</filtering>
 			</resource>
 		</resources>
 
