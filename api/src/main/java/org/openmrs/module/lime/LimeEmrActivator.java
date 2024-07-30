@@ -11,7 +11,7 @@
  *
  * Copyright (C) OpenMRS, LLC.  All Rights Reserved.
  */
-package org.openmrs.module.patientidentifiergenerator;
+package org.openmrs.module.lime;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,7 +20,7 @@ import org.openmrs.module.ModuleActivator;
 /**
  * This class contains the logic that is run every time this module is either started or shutdown
  */
-public class PatientIdentifierGeneratorActivator implements ModuleActivator {
+public class LimeEmrActivator implements ModuleActivator {
 
 	protected Log log = LogFactory.getLog(getClass());
 

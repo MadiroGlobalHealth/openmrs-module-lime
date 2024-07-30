@@ -1,4 +1,4 @@
-package org.openmrs.module.patientidentifiergenerator;
+package org.openmrs.module.lime;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -20,16 +20,16 @@ public class MosulAppointmentsDataFilterListener implements DataFilterListener {
     public boolean onEnableFilter(DataFilterContext filterContext) {
 		if (Context.isAuthenticated() && Context.getAuthenticatedUser().isSuperUser()) {
 			log.trace("Skipping enabling of filters for super user");
-			
+
 			return false;
 		}
-        if (filterContext.getFilterName().startsWith("patientidentifiergenerator_appointmentPrivBasedAppointmentService")) {
+    if (filterContext.getFilterName().startsWith("lime_appointmentPrivilegeBasedAppointmentService")) {
 			Collection<String> privileges = new HashSet<>();
 			if (Context.isAuthenticated()) {
 				Collection<String> allUserPrivileges = Context.getAuthenticatedUser().getPrivileges().stream().map(Privilege::getName).collect(Collectors.toSet());
 				privileges.addAll(allUserPrivileges);
 			}
-			
+
 			filterContext.setParameter("privileges", privileges);
 		}
         return true;
@@ -37,6 +37,6 @@ public class MosulAppointmentsDataFilterListener implements DataFilterListener {
 
     @Override
     public boolean supports(String filterName) {
-        return filterName.startsWith("patientidentifiergenerator_appointmentPrivBasedAppointmentService");
+        return filterName.startsWith("lime_appointmentPrivilegeBasedAppointmentService");
     }
 }
