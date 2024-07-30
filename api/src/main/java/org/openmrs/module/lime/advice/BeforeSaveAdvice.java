@@ -1,9 +1,9 @@
-package org.openmrs.module.patientidentifiergenerator.advice;
+package org.openmrs.module.lime.advice;
 
-import org.openmrs.module.patientidentifiergenerator.IdentifierEnhancementFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
+import org.openmrs.module.lime.IdentifierEnhancementFactory;
 import org.springframework.aop.AfterReturningAdvice;
 import org.springframework.aop.MethodBeforeAdvice;
 

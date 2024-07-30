@@ -1,4 +1,4 @@
-package org.openmrs.module.patientidentifiergenerator;
+package org.openmrs.module.lime;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,4 +34,4 @@ public class MosulMetadataConstants {
         put(MENTAL_HEALTH_DOCTOR_USERNAME, MENTAL_HEALTH_DOCTOR_ROLE_NAME);
         put(MATERNITY_NURSE_USERNAME, MATERNITY_NURSE_ROLE_NAME);
     }});
-} 
+}

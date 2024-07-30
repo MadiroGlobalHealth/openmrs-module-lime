@@ -1,15 +1,15 @@
 [
     {
-        "name" : "patientidentifiergenerator_appointmentPrivBasedAppointmentServiceFilter",
+        "name" : "lime_appointmentPrivilegeBasedAppointmentServiceFilter",
         "targetClasses" : [
             "org.openmrs.module.appointments.model.Appointment"
         ],
-        "condition" : 
-            "patient_appointment_id IN (
-                SELECT pa.patient_appointment_id FROM patient_appointment pa 
-                INNER JOIN appointment_service apts ON pa.appointment_service_id = apts.appointment_service_id 
-                WHERE 'Manage Sensitive Appointments' IN (:privileges) OR apts.name NOT LIKE '%Mental Health%'
-            )",
+        "condition" : "patient_appointment_id IN (
+            SELECT pa.patient_appointment_id FROM patient_appointment pa
+            INNER JOIN appointment_service apts
+                ON pa.appointment_service_id = apts.appointment_service_id
+            WHERE 'Manage Sensitive Appointments' IN (:privileges) OR apts.name NOT LIKE '%Mental Health%'
+        )",
         "parameters" : [
             {
                 "name" : "privileges",

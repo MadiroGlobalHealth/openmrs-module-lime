@@ -4,12 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.openmrs.module</groupId>
-	<artifactId>patientidentifiergenerator</artifactId>
+	<artifactId>lime-emr</artifactId>
 	<version>0.1.0</version>
 	<packaging>pom</packaging>
-	<name>MSF-OCG Patient Identifier Generator Module</name>
+	<name>MSF-OCG LIME EMR Module</name>
 
-	<description>Helps to generate Patient Identifier</description>
+	<description>
+		This module contains APIs used for LIME EMR to manage EMR specific backend dependencies and customizations
+	</description>
 
 	<developers>
 		<developer>

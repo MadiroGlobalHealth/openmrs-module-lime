@@ -1,4 +1,4 @@
-package org.openmrs.module.patientidentifiergenerator;
+package org.openmrs.module.lime;
 
 import java.time.Year;
 
@@ -18,7 +18,7 @@ public class IdentifierEnhancementFactory {
     private static int lastRecordedYear = Year.now().getValue() % 100;
     protected Log log = LogFactory.getLog(getClass());
     private Boolean isIdentiferSequenceReset;
-    
+
     public void enhanceIdentifier(Patient patient) {
         IdentifierSourceService identifierSourceService = Context.getService(IdentifierSourceService.class);
         SequentialIdentifierGenerator MSFIdentifierSource = (SequentialIdentifierGenerator) identifierSourceService.getIdentifierSourceByUuid(MSF_IDENTIFIER_SOURCE_UUID);
@@ -27,7 +27,7 @@ public class IdentifierEnhancementFactory {
             log.error("Identifier Source with uuid " + MSF_IDENTIFIER_SOURCE_UUID + " is not found hence skipping MSF ID generation");
             return;
         }
-        
+
         String prefix = getPrefix(MSFIdentifierSource);
         PatientIdentifier identifier = patient.getPatientIdentifier();
         String bashId = StringUtils.substringAfter(identifier.getIdentifier(), prefix);
@@ -39,7 +39,7 @@ public class IdentifierEnhancementFactory {
         catch (Exception e) {
             throw new IllegalArgumentException("Invalid MSF ID: " + bashId, e);
         }
-        
+
         int currentYearPrefix = Year.now().getValue() % 100;
         if (lastRecordedYear != currentYearPrefix) {
             shouldIdentiferSequenceReset(true);
@@ -81,4 +81,4 @@ public class IdentifierEnhancementFactory {
             log.warn("identifier Sequence Succesfuly Reset" );
         }
     }
-} 
+}

@@ -1,4 +1,4 @@
-package org.openmrs.module.patientidentifiergenerator;
+package org.openmrs.module.lime;
 
 
 import org.junit.Before;
