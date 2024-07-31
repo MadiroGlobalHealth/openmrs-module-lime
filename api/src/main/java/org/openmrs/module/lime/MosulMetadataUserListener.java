@@ -4,6 +4,7 @@ import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.UserSessionListener;
 import org.openmrs.api.context.Context;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
  * roles
  */
 @Component
+@Qualifier("customMosulMetadataUserListener")
 public class MosulMetadataUserListener implements UserSessionListener {
 
 	private static final Logger log = LoggerFactory.getLogger(MosulMetadataUserListener.class);
@@ -40,7 +42,7 @@ public class MosulMetadataUserListener implements UserSessionListener {
         if (!user.hasRole(role.getRole())) {
             user.addRole(role);
             Context.getUserService().saveUser(user);
-            log.debug("Granded Mosul user: '{}' Mosul role: '{}'", user.getUsername(), role.getRole());
+            log.debug("Granted Mosul user: '{}' Mosul role: '{}'", user.getUsername(), role.getRole());
         } else {
             log.debug("Mosul user: '{}' already has Mosul role: '{}''. Skipping...", user.getUsername(), role.getRole());
         }
