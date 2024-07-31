@@ -14,21 +14,21 @@ import org.openmrs.module.idgen.service.IdentifierSourceService;
 public class IdentifierEnhancementFactory {
 
     public static final String MSF_IDENTIFIER_SOURCE_UUID = "8549f706-7e85-4c1d-9424-217d50a2988b";
-    public static final int resetIdentifierSequenceValue = 1;
+    public static final int RESET_IDENTIFIER_SEQUENCE_VALUE = 1;
     private static int lastRecordedYear = Year.now().getValue() % 100;
     protected Log log = LogFactory.getLog(getClass());
     private Boolean isIdentiferSequenceReset;
 
     public void enhanceIdentifier(Patient patient) {
         IdentifierSourceService identifierSourceService = Context.getService(IdentifierSourceService.class);
-        SequentialIdentifierGenerator MSFIdentifierSource = (SequentialIdentifierGenerator) identifierSourceService.getIdentifierSourceByUuid(MSF_IDENTIFIER_SOURCE_UUID);
+        SequentialIdentifierGenerator msfIdentifierSource = (SequentialIdentifierGenerator) identifierSourceService.getIdentifierSourceByUuid(MSF_IDENTIFIER_SOURCE_UUID);
 
-        if (MSFIdentifierSource == null) {
+        if (msfIdentifierSource == null) {
             log.error("Identifier Source with uuid " + MSF_IDENTIFIER_SOURCE_UUID + " is not found hence skipping MSF ID generation");
             return;
         }
 
-        String prefix = getPrefix(MSFIdentifierSource);
+        String prefix = getPrefix(msfIdentifierSource);
         PatientIdentifier identifier = patient.getPatientIdentifier();
         String bashId = StringUtils.substringAfter(identifier.getIdentifier(), prefix);
 
@@ -44,7 +44,7 @@ public class IdentifierEnhancementFactory {
         if (lastRecordedYear != currentYearPrefix) {
             shouldIdentiferSequenceReset(true);
             log.warn("Resetting identifier Sequence since years have changed.  Last recorded year is: "+ lastRecordedYear + " and Current year is: "+currentYearPrefix );
-            translatedBashId = resetIdentifierSequenceValue;
+            translatedBashId = RESET_IDENTIFIER_SEQUENCE_VALUE;
             lastRecordedYear = currentYearPrefix;
         }else {
             shouldIdentiferSequenceReset(false);
@@ -76,8 +76,8 @@ public class IdentifierEnhancementFactory {
     public void saveNewIdentifierSequenceValue() {
         if(hasIsIdentiferSequenceReset()) {
             IdentifierSourceService identifierSourceService = Context.getService(IdentifierSourceService.class);
-            SequentialIdentifierGenerator MSFIdentifierSource = (SequentialIdentifierGenerator) identifierSourceService.getIdentifierSourceByUuid(MSF_IDENTIFIER_SOURCE_UUID);
-            identifierSourceService.saveSequenceValue(MSFIdentifierSource, resetIdentifierSequenceValue + 1);
+            SequentialIdentifierGenerator msfIdentifierSource = (SequentialIdentifierGenerator) identifierSourceService.getIdentifierSourceByUuid(MSF_IDENTIFIER_SOURCE_UUID);
+            identifierSourceService.saveSequenceValue(msfIdentifierSource, RESET_IDENTIFIER_SEQUENCE_VALUE + 1);
             log.warn("identifier Sequence Succesfuly Reset" );
         }
     }

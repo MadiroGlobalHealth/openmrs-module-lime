@@ -28,41 +28,41 @@ public class LimeEmrActivator implements ModuleActivator {
 	 * @see ModuleActivator#willRefreshContext()
 	 */
 	public void willRefreshContext() {
-		log.info("Refreshing Patient Identifier Generator Module");
+		log.info("Refreshing LIME Module");
 	}
 
 	/**
 	 * @see ModuleActivator#contextRefreshed()
 	 */
 	public void contextRefreshed() {
-		log.info("Patient Identifier Generator Module refreshed");
+		log.info("LIME Module refreshed");
 	}
 
 	/**
 	 * @see ModuleActivator#willStart()
 	 */
 	public void willStart() {
-		log.info("Starting Patient Identifier Generator Module");
+		log.info("Starting LIME Module");
 	}
 
 	/**
 	 * @see ModuleActivator#started()
 	 */
 	public void started() {
-		log.info("Patient Identifier Generator Module started");
+		log.info("LIME Module started");
 	}
 
 	/**
 	 * @see ModuleActivator#willStop()
 	 */
 	public void willStop() {
-		log.info("Stopping Patient Identifier Generator Module");
+		log.info("Stopping LIME Module");
 	}
 
 	/**
 	 * @see ModuleActivator#stopped()
 	 */
 	public void stopped() {
-		log.info("Patient Identifier Generator Module stopped");
+		log.info("LIME Module stopped");
 	}
 }

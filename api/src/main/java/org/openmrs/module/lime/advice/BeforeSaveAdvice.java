@@ -11,13 +11,13 @@ import java.lang.reflect.Method;
 
 public class BeforeSaveAdvice implements MethodBeforeAdvice, AfterReturningAdvice {
 
-    private static final String methodToIntercept = "savePatient";
+    private static final String METHOD_TO_INTERCEPT = "savePatient";
     private static IdentifierEnhancementFactory identifierEnhancementFactory = new IdentifierEnhancementFactory();
     private ThreadLocal<Patient> patientThreadLocal = new ThreadLocal<>();
     private Log log = LogFactory.getLog(getClass());
 
     public void before(Method method, Object[] objects, Object o) {
-        if (method.getName().equalsIgnoreCase(methodToIntercept)) {
+        if (method.getName().equalsIgnoreCase(METHOD_TO_INTERCEPT)) {
             Patient patient = (Patient) objects[0];
             if (patient.getPatientId() == null) {
                 identifierEnhancementFactory.enhanceIdentifier(patient);
@@ -28,7 +28,7 @@ public class BeforeSaveAdvice implements MethodBeforeAdvice, AfterReturningAdvic
 
     @Override
     public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
-        if (method.getName().equalsIgnoreCase(methodToIntercept) && args[0] instanceof Patient) {
+        if (method.getName().equalsIgnoreCase(METHOD_TO_INTERCEPT) && args[0] instanceof Patient) {
             log.warn("Patient Created succesfully." );
 
             Patient patient = patientThreadLocal.get();
