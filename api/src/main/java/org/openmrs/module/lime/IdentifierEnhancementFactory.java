@@ -5,8 +5,6 @@ import java.time.Year;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Patient;
-import org.openmrs.PatientIdentifier;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.idgen.SequentialIdentifierGenerator;
 import org.openmrs.module.idgen.service.IdentifierSourceService;
@@ -19,18 +17,17 @@ public class IdentifierEnhancementFactory {
     protected Log log = LogFactory.getLog(getClass());
     private Boolean isIdentiferSequenceReset;
 
-    public void enhanceIdentifier(Patient patient) {
+    public String enhanceIdentifier(String identifier) {
         IdentifierSourceService identifierSourceService = Context.getService(IdentifierSourceService.class);
         SequentialIdentifierGenerator msfIdentifierSource = (SequentialIdentifierGenerator) identifierSourceService.getIdentifierSourceByUuid(MSF_IDENTIFIER_SOURCE_UUID);
 
         if (msfIdentifierSource == null) {
             log.error("Identifier Source with uuid " + MSF_IDENTIFIER_SOURCE_UUID + " is not found hence skipping MSF ID generation");
-            return;
+            return identifier;
         }
 
         String prefix = getPrefix(msfIdentifierSource);
-        PatientIdentifier identifier = patient.getPatientIdentifier();
-        String bashId = StringUtils.substringAfter(identifier.getIdentifier(), prefix);
+        String bashId = StringUtils.substringAfter(identifier, prefix);
 
         int translatedBashId;
         try {
@@ -46,7 +43,7 @@ public class IdentifierEnhancementFactory {
             log.warn("Resetting identifier Sequence since years have changed.  Last recorded year is: "+ lastRecordedYear + " and Current year is: "+currentYearPrefix );
             translatedBashId = RESET_IDENTIFIER_SEQUENCE_VALUE;
             lastRecordedYear = currentYearPrefix;
-        }else {
+        } else {
             shouldIdentiferSequenceReset(false);
         }
         translatedBashId = translatedBashId +  (currentYearPrefix * 1000000);
@@ -57,7 +54,8 @@ public class IdentifierEnhancementFactory {
         StringBuilder enhancedId = new StringBuilder();
         enhancedId.append(prefix)
                   .append(bashId.replaceAll(regex, "$1-"));
-        identifier.setIdentifier(enhancedId.toString());
+
+        return enhancedId.toString();
     }
 
     private String getPrefix(SequentialIdentifierGenerator IdentifierSourceGenerator) {
@@ -78,7 +76,7 @@ public class IdentifierEnhancementFactory {
             IdentifierSourceService identifierSourceService = Context.getService(IdentifierSourceService.class);
             SequentialIdentifierGenerator msfIdentifierSource = (SequentialIdentifierGenerator) identifierSourceService.getIdentifierSourceByUuid(MSF_IDENTIFIER_SOURCE_UUID);
             identifierSourceService.saveSequenceValue(msfIdentifierSource, RESET_IDENTIFIER_SEQUENCE_VALUE + 1);
-            log.warn("identifier Sequence Succesfuly Reset" );
+            log.warn("identifier Sequence Successfully Reset" );
         }
     }
 }

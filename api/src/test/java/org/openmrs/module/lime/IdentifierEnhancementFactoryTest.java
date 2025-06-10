@@ -1,16 +1,9 @@
 package org.openmrs.module.lime;
 
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.openmrs.Location;
-import org.openmrs.Patient;
-import org.openmrs.PatientIdentifier;
-import org.openmrs.PatientIdentifierType;
-import org.openmrs.PersonAttribute;
-import org.openmrs.PersonAttributeType;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.idgen.service.IdentifierSourceService;
 import org.openmrs.module.idgen.SequentialIdentifierGenerator;
@@ -22,7 +15,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.time.Year;
-import java.util.HashSet;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -47,47 +39,37 @@ public class IdentifierEnhancementFactoryTest {
     }
 
     @Test
-    public void shouldAddMSFIDFormatToPatientIdentifier() {
-        Patient patient = setUpPatientData();
+    public void shouldAddMSFIDFormatToIdentifier() {
+        String identifier = "IQ146-1";
         SequentialIdentifierGenerator sequentialIdentifierGenerator = setUpIdentifierSource();
         when(identifierSourceService.getIdentifierSourceByUuid(TEST_MSF_IDENTIFIER_SOURCE_UUID)).thenReturn(sequentialIdentifierGenerator);
 
-        identifierEnhancementFactory.enhanceIdentifier(patient);
+        String enhancedIdentifier = identifierEnhancementFactory.enhanceIdentifier(identifier);
         // for year 2024, id will be IQ146-24-000-001
-        assertEquals("IQ146-" + getCurrentYear() + "-000-001", patient.getPatientIdentifier().getIdentifier());
+        assertEquals("IQ146-" + getCurrentYear() + "-000-001", enhancedIdentifier);
     }
 
     @Test
     public void shouldResetMSFIDSequenceOnNewYear() {
-        Patient patient = setUpPatientData();
-        patient.getPatientIdentifier().setIdentifier("IQ146-999");
-
+        String identifier = "IQ146-999";
         int followingYear = getCurrentYear() + 1;
         setLastRecordedYear(followingYear);
 
         SequentialIdentifierGenerator sequentialIdentifierGenerator = setUpIdentifierSource();
         when(identifierSourceService.getIdentifierSourceByUuid(TEST_MSF_IDENTIFIER_SOURCE_UUID)).thenReturn(sequentialIdentifierGenerator);
 
-        identifierEnhancementFactory.enhanceIdentifier(patient);
+        String enhancedIdentifier = identifierEnhancementFactory.enhanceIdentifier(identifier);
         // for year 2024, id will be IQ146-24-000-001
-        assertEquals("IQ146-" + getCurrentYear() + "-000-001", patient.getPatientIdentifier().getIdentifier());
+        assertEquals("IQ146-" + getCurrentYear() + "-000-001", enhancedIdentifier);
     }
 
-    private Patient setUpPatientData() {
-        Patient patient = new Patient();
-        patient.setGender("M");
-        PatientIdentifier patientIdentifier =
-                new PatientIdentifier("IQ146-1", new PatientIdentifierType(), new Location());
-        HashSet<PatientIdentifier> patientIdentifiers = new HashSet<>();
-        patientIdentifiers.add(patientIdentifier);
-        patient.setIdentifiers(patientIdentifiers);
-        PersonAttributeType personAttributeType = new PersonAttributeType();
-        personAttributeType.setName("personAttribute");
-        PersonAttribute personAttribute = new PersonAttribute(personAttributeType, "100");
-        HashSet<PersonAttribute> personAttributes = new HashSet<>();
-        personAttributes.add(personAttribute);
-        patient.setAttributes(personAttributes);
-        return patient;
+    @Test
+    public void shouldReturnOriginalIdentifierWhenSourceNotFound() {
+        String identifier = "IQ146-1";
+        when(identifierSourceService.getIdentifierSourceByUuid(TEST_MSF_IDENTIFIER_SOURCE_UUID)).thenReturn(null);
+
+        String enhancedIdentifier = identifierEnhancementFactory.enhanceIdentifier(identifier);
+        assertEquals(identifier, enhancedIdentifier);
     }
 
     private SequentialIdentifierGenerator setUpIdentifierSource() {
@@ -113,5 +95,4 @@ public class IdentifierEnhancementFactoryTest {
     private int getCurrentYear() {
         return Year.now().getValue() % 100;
     }
-
 }
