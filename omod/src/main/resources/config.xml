@@ -14,7 +14,7 @@
 	<activator>org.openmrs.module.lime.LimeEmrActivator</activator>
 
 	<advice>
-		<point>org.openmrs.api.PatientService</point>
+		<point>org.openmrs.module.idgen.service.IdentifierSourceService</point>
 		<class>org.openmrs.module.lime.advice.BeforeSaveAdvice</class>
 	</advice>
 
