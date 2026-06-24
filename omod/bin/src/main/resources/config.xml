@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module configVersion="1.2">
+
+	<id>lime-emr</id>
+	<name>MSF-OCG LIME EMR Module</name>
+	<version>0.1.0</version>
+	<package>org.openmrs.module.lime</package>
+	<author>msf</author>
+	<description>
+		Base module for LIME backend dependencies and customizations like the Patient Identifier
+	</description>
+
+	<activator>org.openmrs.module.lime.LimeEmrActivator</activator>
+
+	<advice>
+		<point>org.openmrs.api.PatientService</point>
+		<class>org.openmrs.module.lime.advice.BeforeSaveAdvice</class>
+	</advice>
+
+	<require_modules>
+		<require_module version="4.10.0">org.openmrs.module.idgen</require_module>
+		<require_module version="2.2.0">org.openmrs.module.datafilter</require_module>
+		<require_module version="1.0.0">org.bahmni.module.appointments</require_module>
+	</require_modules>
+
+</module>
