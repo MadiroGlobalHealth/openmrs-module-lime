@@ -15,7 +15,6 @@
 	<properties>
 		<openMRSVersion>2.6.6</openMRSVersion>
 		<idgenModuleVersion>4.11.0-SNAPSHOT</idgenModuleVersion>
-		<datafilterVersion>2.3.0-SNAPSHOT</datafilterVersion>
 		<appointmentsModuleVersion>2.1.0-SNAPSHOT</appointmentsModuleVersion>
 	</properties>
 
@@ -74,12 +73,6 @@
 			<type>jar</type>
 			<scope>provided</scope>
 			<version>${appointmentsModuleVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.openmrs.module</groupId>
-			<artifactId>datafilter-api</artifactId>
-			<version>${datafilterVersion}</version>
-			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
