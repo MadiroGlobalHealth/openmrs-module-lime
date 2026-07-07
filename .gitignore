@@ -16,3 +16,5 @@ api/target/
 *.iml
 
 .vscode
+
+docs

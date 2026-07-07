@@ -15,7 +15,7 @@
 	<properties>
 		<openMRSVersion>2.6.6</openMRSVersion>
 		<idgenModuleVersion>4.11.0-SNAPSHOT</idgenModuleVersion>
-		<datafilterVersion>2.3.0-SNAPSHOT</datafilterVersion>
+		<appointmentsModuleVersion>2.1.0-SNAPSHOT</appointmentsModuleVersion>
 	</properties>
 
 	<dependencies>
@@ -68,10 +68,11 @@
 			<version>${idgenModuleVersion}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.openmrs.module</groupId>
-			<artifactId>datafilter-api</artifactId>
-			<version>${datafilterVersion}</version>
+			<groupId>org.bahmni.module</groupId>
+			<artifactId>appointments-api</artifactId>
+			<type>jar</type>
 			<scope>provided</scope>
+			<version>${appointmentsModuleVersion}</version>
 		</dependency>
 	</dependencies>
 
@@ -94,11 +95,36 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.0.0-M5</version>
-				<configuration>
-			        <argLine>--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED</argLine>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+
+	<!--
+		The surefire "add opens" JVM flags are a JDK 9+ (JPMS) feature; a real Java 8 JVM
+		doesn't recognize them and refuses to start ("Unrecognized option"). PowerMock's
+		reflection (mockStatic, Whitebox) needs them on JDK 9+ to bypass module access
+		checks. This profile applies those flags only when tests actually run on JDK 9+,
+		leaving Java 8 runs untouched.
+	-->
+	<profiles>
+		<profile>
+			<id>jdk9-plus-add-opens</id>
+			<activation>
+				<jdk>[9,)</jdk>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>3.0.0-M5</version>
+						<configuration>
+							<argLine>--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED</argLine>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
