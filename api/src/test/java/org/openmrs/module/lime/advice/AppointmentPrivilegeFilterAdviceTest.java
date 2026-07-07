@@ -6,6 +6,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,6 +125,36 @@ public class AppointmentPrivilegeFilterAdviceTest {
         conflictList.add(normal);
         Map<String, List<Appointment>> conflicts = new HashMap<>();
         conflicts.put("SERVICE_UNAVAILABLE", conflictList);
+        when(invocation.proceed()).thenReturn(conflicts);
+
+        Object result = advice.invoke(invocation);
+
+        List<?> filtered = (List<?>) ((Map<?, ?>) result).get("SERVICE_UNAVAILABLE");
+        assertEquals(1, filtered.size());
+        assertTrue(filtered.contains(normal));
+    }
+
+    @Test
+    public void invoke_shouldFilterUnmodifiableList_withoutThrowing() throws Throwable {
+        Appointment sensitive = appointmentWithServiceName("Mental Health Counseling");
+        Appointment normal = appointmentWithServiceName("General Consultation");
+        List<Appointment> appointments = Collections.unmodifiableList(Arrays.asList(sensitive, normal));
+        when(invocation.proceed()).thenReturn(appointments);
+
+        Object result = advice.invoke(invocation);
+
+        List<?> filtered = (List<?>) result;
+        assertEquals(1, filtered.size());
+        assertTrue(filtered.contains(normal));
+    }
+
+    @Test
+    public void invoke_shouldFilterListsWithinUnmodifiableConflictsMap_withoutThrowing() throws Throwable {
+        Appointment sensitive = appointmentWithServiceName("Mental Health Counseling");
+        Appointment normal = appointmentWithServiceName("General Consultation");
+        List<Appointment> conflictList = Collections.unmodifiableList(Arrays.asList(sensitive, normal));
+        Map<String, List<Appointment>> conflicts = Collections
+                .unmodifiableMap(Collections.singletonMap("SERVICE_UNAVAILABLE", conflictList));
         when(invocation.proceed()).thenReturn(conflicts);
 
         Object result = advice.invoke(invocation);

@@ -1,5 +1,7 @@
 package org.openmrs.module.lime.advice;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,23 +36,29 @@ public class AppointmentPrivilegeFilterAdvice implements MethodInterceptor {
             return isSensitive((Appointment) returnValue) ? null : returnValue;
         }
         if (returnValue instanceof List) {
-            removeSensitive((List<?>) returnValue);
-            return returnValue;
+            return filterSensitive((List<?>) returnValue);
         }
         if (returnValue instanceof Map) {
-            for (Object value : ((Map<?, ?>) returnValue).values()) {
-                if (value instanceof List) {
-                    removeSensitive((List<?>) value);
-                }
+            Map<Object, Object> filtered = new LinkedHashMap<>();
+            for (Map.Entry<?, ?> entry : ((Map<?, ?>) returnValue).entrySet()) {
+                Object value = entry.getValue();
+                filtered.put(entry.getKey(), value instanceof List ? filterSensitive((List<?>) value) : value);
             }
-            return returnValue;
+            return filtered;
         }
 
         return returnValue;
     }
 
-    private void removeSensitive(List<?> appointments) {
-        appointments.removeIf(item -> item instanceof Appointment && isSensitive((Appointment) item));
+    private List<Object> filterSensitive(List<?> appointments) {
+        List<Object> filtered = new ArrayList<>();
+        for (Object item : appointments) {
+            if (item instanceof Appointment && isSensitive((Appointment) item)) {
+                continue;
+            }
+            filtered.add(item);
+        }
+        return filtered;
     }
 
     private boolean canViewSensitiveAppointments() {
