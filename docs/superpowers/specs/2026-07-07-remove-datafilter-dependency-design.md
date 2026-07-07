@@ -34,6 +34,7 @@ Replace the Hibernate-level filter with a single Spring AOP `MethodInterceptor` 
 - **Modified:** `omod/src/main/resources/config.xml`
   - Remove `<require_module version="2.2.0">org.openmrs.module.datafilter</require_module>`.
   - Add a new `<advice>` block:
+
     ```xml
     <advice>
         <point>org.openmrs.module.appointments.service.AppointmentsService</point>
