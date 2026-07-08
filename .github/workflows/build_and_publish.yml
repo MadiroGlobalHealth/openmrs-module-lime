@@ -64,5 +64,4 @@ jobs:
             }]
 
       - name: Publish maven artifacts
-        run: 'mvn --batch-mode deploy'
-        working-directory: ${{ github.workspace }}/omod
+        run: mvn --batch-mode clean deploy
