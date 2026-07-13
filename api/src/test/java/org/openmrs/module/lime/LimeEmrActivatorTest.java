@@ -10,7 +10,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -68,13 +67,12 @@ public class LimeEmrActivatorTest {
         assertEquals(LimeEmrActivator.REBUILD_SEARCH_INDEX_TASK_CLASS, task.getTaskClass());
         assertEquals(LimeEmrActivator.REBUILD_SEARCH_INDEX_TASK_UUID, task.getUuid());
         assertEquals("MM/dd/yyyy HH:mm:ss", task.getStartTimePattern());
-        assertEquals(Long.valueOf(LimeEmrActivator.WEEKLY_REPEAT_INTERVAL_SECONDS), task.getRepeatInterval());
+        assertEquals(Long.valueOf(LimeEmrActivator.DAILY_REPEAT_INTERVAL_SECONDS), task.getRepeatInterval());
         assertTrue(task.getStartOnStartup());
         assertTrue(task.getStarted());
         assertNotNull(task.getStartTime());
 
         ZonedDateTime scheduledTime = ZonedDateTime.ofInstant(task.getStartTime().toInstant(), ZoneId.systemDefault());
-        assertEquals(DayOfWeek.FRIDAY, scheduledTime.getDayOfWeek());
         assertEquals(5, scheduledTime.getHour());
         assertEquals(0, scheduledTime.getMinute());
         assertEquals(0, scheduledTime.getSecond());
@@ -108,7 +106,7 @@ public class LimeEmrActivatorTest {
         assertEquals(LimeEmrActivator.REBUILD_SEARCH_INDEX_TASK_DESCRIPTION, task.getDescription());
         assertEquals(LimeEmrActivator.REBUILD_SEARCH_INDEX_TASK_CLASS, task.getTaskClass());
         assertEquals(LimeEmrActivator.REBUILD_SEARCH_INDEX_TASK_UUID, task.getUuid());
-        assertEquals(Long.valueOf(LimeEmrActivator.WEEKLY_REPEAT_INTERVAL_SECONDS), task.getRepeatInterval());
+        assertEquals(Long.valueOf(LimeEmrActivator.DAILY_REPEAT_INTERVAL_SECONDS), task.getRepeatInterval());
         assertTrue(task.getStartOnStartup());
         assertTrue(task.getStarted());
         verify(log).info(contains("Rescheduled search index rebuild task"));

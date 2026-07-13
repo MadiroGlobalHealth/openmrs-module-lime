@@ -13,8 +13,6 @@
  */
 package org.openmrs.module.lime;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -35,7 +33,7 @@ public class LimeEmrActivator implements ModuleActivator {
 
 	public static final String REBUILD_SEARCH_INDEX_TASK_NAME = "Rebuild Search Index";
 
-	public static final String REBUILD_SEARCH_INDEX_TASK_DESCRIPTION = "Weekly rebuild of the OpenMRS search index";
+	public static final String REBUILD_SEARCH_INDEX_TASK_DESCRIPTION = "Daily rebuild of the OpenMRS search index";
 
 	public static final String REBUILD_SEARCH_INDEX_TASK_CLASS = RebuildSearchIndexTask.class.getName();
 
@@ -43,7 +41,7 @@ public class LimeEmrActivator implements ModuleActivator {
 
 	public static final String REBUILD_SEARCH_INDEX_START_TIME_PATTERN = "MM/dd/yyyy HH:mm:ss";
 
-	public static final long WEEKLY_REPEAT_INTERVAL_SECONDS = 7L * 24 * 60 * 60;
+	public static final long DAILY_REPEAT_INTERVAL_SECONDS = 24L * 60 * 60;
 
 	protected Log log = LogFactory.getLog(getClass());
 
@@ -113,9 +111,9 @@ public class LimeEmrActivator implements ModuleActivator {
 			task.setDescription(REBUILD_SEARCH_INDEX_TASK_DESCRIPTION);
 			task.setTaskClass(REBUILD_SEARCH_INDEX_TASK_CLASS);
 			task.setStartTimePattern(REBUILD_SEARCH_INDEX_START_TIME_PATTERN);
-			task.setRepeatInterval(WEEKLY_REPEAT_INTERVAL_SECONDS);
+			task.setRepeatInterval(DAILY_REPEAT_INTERVAL_SECONDS);
 			if (!existingTask) {
-				task.setStartTime(getNextFridayAtFiveAm());
+				task.setStartTime(getNextFiveAm());
 			}
 			task.setStartOnStartup(Boolean.TRUE);
 			task.setStarted(Boolean.TRUE);
@@ -126,7 +124,7 @@ public class LimeEmrActivator implements ModuleActivator {
 				log.info("Rescheduled search index rebuild task");
 			} else {
 				schedulerService.scheduleTask(task);
-				log.info("Created search index rebuild task for Friday at 05:00");
+				log.info("Created search index rebuild task for 05:00 daily");
 			}
 		}
 		catch (Exception e) {
@@ -134,15 +132,12 @@ public class LimeEmrActivator implements ModuleActivator {
 		}
 	}
 
-	Date getNextFridayAtFiveAm() {
+	Date getNextFiveAm() {
 		ZoneId zone = ZoneId.systemDefault();
 		LocalDateTime now = LocalDateTime.now(zone);
-		LocalDate today = now.toLocalDate();
-		int daysUntilFriday = (DayOfWeek.FRIDAY.getValue() - today.getDayOfWeek().getValue() + 7) % 7;
-		LocalDate targetDate = today.plusDays(daysUntilFriday);
-		LocalDateTime targetDateTime = LocalDateTime.of(targetDate, LocalTime.of(5, 0));
+		LocalDateTime targetDateTime = LocalDateTime.of(now.toLocalDate(), LocalTime.of(5, 0));
 		if (!targetDateTime.isAfter(now)) {
-			targetDateTime = targetDateTime.plusWeeks(1);
+			targetDateTime = targetDateTime.plusDays(1);
 		}
 		log.info("Search index rebuild scheduled for " + targetDateTime + " (zone: " + zone + ")");
 		return Date.from(targetDateTime.atZone(zone).toInstant());
