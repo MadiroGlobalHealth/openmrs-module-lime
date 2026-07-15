@@ -15,7 +15,7 @@
 	<description>OMOD project for LIME EMR dependencies and customizations</description>
 
 	<properties>
-		<openMRSVersion>2.6.6</openMRSVersion>
+		<openMRSVersion>2.8.7</openMRSVersion>
 	</properties>
 
 	<dependencies>
