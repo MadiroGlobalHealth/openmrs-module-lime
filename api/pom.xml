@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>lime-emr</artifactId>
-		<version>1.1.1</version>
+		<version>1.1.2</version>
 	</parent>
 
 	<artifactId>lime-emr-api</artifactId>
@@ -13,7 +13,7 @@
 	<description>API project for LIME EMR dependencies and customizations</description>
 
 	<properties>
-		<openMRSVersion>2.6.6</openMRSVersion>
+		<openMRSVersion>2.8.7</openMRSVersion>
 		<idgenModuleVersion>4.11.0-SNAPSHOT</idgenModuleVersion>
 		<appointmentsModuleVersion>2.1.0-SNAPSHOT</appointmentsModuleVersion>
 	</properties>
@@ -119,7 +119,7 @@
 						<artifactId>maven-surefire-plugin</artifactId>
 						<version>3.0.0-M5</version>
 						<configuration>
-							<argLine>--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED</argLine>
+							<argLine>--add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.time=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.lang.reflect=ALL-UNNAMED --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED</argLine>
 						</configuration>
 					</plugin>
 				</plugins>
